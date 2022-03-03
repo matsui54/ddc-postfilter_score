@@ -1,7 +1,7 @@
 import { fn } from "https://deno.land/x/ddc_vim@v2.2.0/deps.ts";
 import {
   BaseFilter,
-  Candidate,
+  Item,
 } from "https://deno.land/x/ddc_vim@v2.2.0/types.ts#^";
 import {
   FilterArguments,
@@ -20,7 +20,7 @@ type Params = {
 };
 
 type sortItem = {
-  item: Candidate;
+  item: Item;
   score: number;
 };
 
@@ -29,6 +29,7 @@ export class Filter extends BaseFilter<Params> {
 
   private cache: Record<string, number> = {};
 
+  // code from https://github.com/Shougo/ddc-sorter_rank
   async onEvent({
     denops,
     options,
@@ -66,10 +67,10 @@ export class Filter extends BaseFilter<Params> {
     completeStr,
     candidates,
     context,
-  }: FilterArguments<Params>): Promise<Candidate[]> {
+  }: FilterArguments<Params>): Promise<Item[]> {
     let sourceIndex = -1;
     const idxMap: Record<string, number> = {};
-    const toCalc: Candidate[] = [];
+    const toCalc: Item[] = [];
     const excluded: sortItem[] = [];
     for (const c of candidates) {
       // @ts-ignore: Unofficial API
