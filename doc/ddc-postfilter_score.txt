@@ -1,0 +1,111 @@
+*ddc-postfilter_score.txt*		Post filter using score for ddc.vim.
+
+Author: matsui54 <haru.matu9168 at gmail.com>
+License: MIT license
+
+CONTENTS				*ddc-postfilter_score-contents*
+
+Introduction		|ddc-postfilter_score-introduction|
+Install			|ddc-postfilter_score-install|
+Examples		|ddc-postfilter_score-examples|
+Params			|ddc-postfilter_score-params|
+
+
+==============================================================================
+INTRODUCTION				*ddc-postfilter_score-introduction*
+
+This filter calculates score of candidates and sort by it. The score is
+calculated based on source order, matching score and locality score.
+Note that this filter is intended to use as |ddc-option-postFilters|.
+This filter also add highlights to matched characters unless you disable it by
+option.
+
+==============================================================================
+INSTALL						*ddc-postfilter_score-install*
+
+Please install both "ddc.vim" and "denops.vim".
+
+https://github.com/Shougo/ddc.vim
+https://github.com/vim-denops/denops.vim
+
+==============================================================================
+EXAMPLES					*ddc-postfilter_score-examples*
+>
+  " Use ddc-fuzzy only for matching
+  call ddc#custom#patch_global('sourceOptions', {
+        \ '_': {
+        \   'matchers': ['matcher_fuzzy'],
+        \   'sorters': [],
+        \ },
+	\ })
+  call ddc#custom#patch_global('postFilters', ["postfilter_score"])
+
+  " Don't calculate score for skkeleton
+  call ddc#custom#patch_global('filterParams', {
+        \ 'postfilter_score': {
+	\   'excludeSources': ["skkeleton"],
+	\ },
+        \ })
+<
+==============================================================================
+PARAMS						*ddc-postfilter_score-params*
+
+The score is the sum of three elements; matching score, index score and 
+locality score.
+
+As for matching score, fzf algorithm is used.
+https://github.com/ajitid/fzf-for-js
+NOTE that if the candidates have an item which does not match fuzzily with 
+input, fzf removes it and it is not shown in complete menu.
+Therefore, you should exclude such sources via the `excludeSources` parameter.
+Matching score for excluded sources is `baseScoreExcluded`.
+
+Source Index score is calculated like this.
+This means that the larger the index of sources, the smaller the score of
+candidates.
+If you make `sourceIdxWeight` 0, candidates from all sources is completely
+mixed.
+`- (index of sources) * sourceIdxWeight`
+
+Locality score is calculated like this.
+`(1 - abs((line of word) - (line of cursor)) / lineRange) * scoreSameLine`
+
+If `(line of word) - (line of cursor)` exceeds `lineRange`, locality score
+becomes 0. `scoreSameLine` is the score when the candidate is in the same line
+as cursor.
+
+You can configure how the score is calculated through the parameters
+`sourceIdxWeight`, `lineRange` and `scoreSameLine`.
+
+				*ddc-postfilter_score-param-lineRange*
+				*ddc-postfilter_score-param-scoreSameLine*
+				*ddc-postfilter_score-param-sourceIdxWeight*
+				*ddc-postfilter_score-param-baseScoreExcluded*
+lineRange	(number) Default: 150
+scoreSameLine	(number) Default: 5
+sourceIdxWeight	(number) Default: 5
+baseScoreExcluded 
+		(number) Default: 50
+		Scoring parameters. Please see above.
+
+				*ddc-postfilter_score-param-excludeSources*
+excludeSources	(string[])
+		Sources which are excluded from fzf scoring.
+		Default: []
+
+				*ddc-postfilter_score-param-hlGroup*
+hlGroup		(string)
+		Highlight group used for highlighting matched characters.
+		If you specify empty string, highlighting is disabled.
+
+		Default: "Title"
+
+				*ddc-postfilter_score-param-showScore*
+showScore	(boolean)
+		If true, score is shown in completion menu.
+
+		Default: v:false
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:noet:fen:noet:
+
