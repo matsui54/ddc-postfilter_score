@@ -1,8 +1,8 @@
-import { fn } from "https://deno.land/x/ddc_vim@v3.1.0/deps.ts";
-import { BaseFilter, Item } from "https://deno.land/x/ddc_vim@v3.1.0/types.ts";
+import { fn } from "https://deno.land/x/ddc_vim@v3.4.0/deps.ts";
+import { BaseFilter, Item } from "https://deno.land/x/ddc_vim@v3.4.0/types.ts";
 import {
   FilterArguments,
-} from "https://deno.land/x/ddc_vim@v3.1.0/base/filter.ts";
+} from "https://deno.land/x/ddc_vim@v3.4.0/base/filter.ts";
 import { Fzf } from "https://esm.sh/fzf@0.5.1/";
 
 // TODO: add sourceWeight => ex. vsnip += 10
