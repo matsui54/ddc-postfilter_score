@@ -3,7 +3,7 @@ import { BaseFilter, Item } from "https://deno.land/x/ddc_vim@v3.4.0/types.ts";
 import {
   FilterArguments,
 } from "https://deno.land/x/ddc_vim@v3.4.0/base/filter.ts";
-import { Fzf } from "https://esm.sh/fzf@0.5.1/";
+import { Fzf } from "https://esm.sh/fzf@0.5.2/";
 
 // TODO: add sourceWeight => ex. vsnip += 10
 type Params = {
