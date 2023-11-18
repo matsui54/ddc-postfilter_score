@@ -1,8 +1,8 @@
-import { fn } from "https://deno.land/x/ddc_vim@v3.4.0/deps.ts";
-import { BaseFilter, Item } from "https://deno.land/x/ddc_vim@v3.4.0/types.ts";
+import { fn } from "https://deno.land/x/ddc_vim@v4.1.0/deps.ts";
+import { BaseFilter, Item } from "https://deno.land/x/ddc_vim@v4.1.0/types.ts";
 import {
   FilterArguments,
-} from "https://deno.land/x/ddc_vim@v3.4.0/base/filter.ts";
+} from "https://deno.land/x/ddc_vim@v4.1.0/base/filter.ts";
 import { Fzf } from "https://esm.sh/fzf@0.5.2/";
 
 // TODO: add sourceWeight => ex. vsnip += 10
@@ -29,8 +29,8 @@ export class Filter extends BaseFilter<Params> {
   // code from https://github.com/Shougo/ddc-sorter_rank
   async onEvent({
     denops,
-    options,
     filterParams,
+    sourceOptions,
   }: FilterArguments<Params>): Promise<void> {
     const maxSize = filterParams.lineRange;
     const currentLine = (await denops.call("line", ".")) as number;
@@ -42,7 +42,7 @@ export class Filter extends BaseFilter<Params> {
 
     this.cache = {};
     let linenr = minLines;
-    const pattern = new RegExp(options.keywordPattern, "gu");
+    const pattern = new RegExp(sourceOptions.keywordPattern, "gu");
     for (const line of await fn.getline(denops, minLines, maxLines)) {
       for (const match of line.matchAll(pattern)) {
         const word = match[0];
