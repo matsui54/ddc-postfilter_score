@@ -4,6 +4,7 @@ import {
   FilterArguments,
 } from "https://deno.land/x/ddc_vim@v4.1.0/base/filter.ts";
 import { Fzf } from "https://esm.sh/fzf@0.5.2/";
+import { convertKeywordPattern } from "https://deno.land/x/ddc_vim@v4.1.0/util.ts";
 
 // TODO: add sourceWeight => ex. vsnip += 10
 type Params = {
@@ -30,7 +31,6 @@ export class Filter extends BaseFilter<Params> {
   async onEvent({
     denops,
     filterParams,
-    sourceOptions,
   }: FilterArguments<Params>): Promise<void> {
     const maxSize = filterParams.lineRange;
     const currentLine = (await denops.call("line", ".")) as number;
@@ -40,9 +40,12 @@ export class Filter extends BaseFilter<Params> {
       currentLine + maxSize,
     );
 
+    // Convert keywordPattern
+    const keywordPattern = await convertKeywordPattern(denops, "\\k*");
+
     this.cache = {};
     let linenr = minLines;
-    const pattern = new RegExp(sourceOptions.keywordPattern, "gu");
+    const pattern = new RegExp(keywordPattern, "gu");
     for (const line of await fn.getline(denops, minLines, maxLines)) {
       for (const match of line.matchAll(pattern)) {
         const word = match[0];
