@@ -1,10 +1,8 @@
-import { fn } from "https://deno.land/x/ddc_vim@v4.1.0/deps.ts";
-import { BaseFilter, Item } from "https://deno.land/x/ddc_vim@v4.1.0/types.ts";
-import {
-  FilterArguments,
-} from "https://deno.land/x/ddc_vim@v4.1.0/base/filter.ts";
+import * as fn from "jsr:@denops/std@7.6.0/function";
+import { BaseFilter, FilterArguments } from "jsr:@shougo/ddc-vim@9.5.0/filter";
+import { Item } from "jsr:@shougo/ddc-vim@9.5.0/types";
 import { Fzf } from "https://esm.sh/fzf@0.5.2/";
-import { convertKeywordPattern } from "https://deno.land/x/ddc_vim@v4.1.0/util.ts";
+import { convertKeywordPattern } from "jsr:@shougo/ddc-vim@9.5.0/utils";
 
 // TODO: add sourceWeight => ex. vsnip += 10
 type Params = {
@@ -23,12 +21,12 @@ type sortItem = {
 };
 
 export class Filter extends BaseFilter<Params> {
-  events = ["InsertEnter"] as never[];
+  override events = ["InsertEnter"] as never[];
 
   private cache: Record<string, number> = {};
 
   // code from https://github.com/Shougo/ddc-sorter_rank
-  async onEvent({
+  override async onEvent({
     denops,
     filterParams,
   }: FilterArguments<Params>): Promise<void> {
