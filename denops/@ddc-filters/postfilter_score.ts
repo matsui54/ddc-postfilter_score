@@ -1,8 +1,8 @@
 import * as fn from "jsr:@denops/std@8.0.0/function";
-import { BaseFilter, FilterArguments } from "jsr:@shougo/ddc-vim@9.5.0/filter";
-import { Item } from "jsr:@shougo/ddc-vim@9.5.0/types";
+import { BaseFilter, FilterArguments } from "jsr:@shougo/ddc-vim@10.0.0/filter";
+import { Item } from "jsr:@shougo/ddc-vim@10.0.0/types";
 import { Fzf } from "https://esm.sh/fzf@0.5.2/";
-import { convertKeywordPattern } from "jsr:@shougo/ddc-vim@9.5.0/utils";
+import { convertKeywordPattern } from "jsr:@shougo/ddc-vim@10.0.0/utils";
 
 // TODO: add sourceWeight => ex. vsnip += 10
 type Params = {
