@@ -1,4 +1,4 @@
-import * as fn from "jsr:@denops/std@7.6.0/function";
+import * as fn from "jsr:@denops/std@8.0.0/function";
 import { BaseFilter, FilterArguments } from "jsr:@shougo/ddc-vim@9.5.0/filter";
 import { Item } from "jsr:@shougo/ddc-vim@9.5.0/types";
 import { Fzf } from "https://esm.sh/fzf@0.5.2/";
